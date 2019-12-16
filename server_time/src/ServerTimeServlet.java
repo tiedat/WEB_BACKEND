@@ -14,6 +14,9 @@ public class ServerTimeServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+        response.setIntHeader("Refresh", 1);
+
         PrintWriter writer = response.getWriter();
         writer.println("<html>");
 

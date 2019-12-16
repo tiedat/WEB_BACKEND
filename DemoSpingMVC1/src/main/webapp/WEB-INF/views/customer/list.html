@@ -11,7 +11,7 @@
     <div th:each="product,iterStat : ${products}" th:class="${iterStat.odd}? 'odd'">
         <div class="product-item">
             <p th:text="${product.name}"></p>
-            <p <a>th:herf=</a>th:text="${product.price}"></p>
+            <p th:text="${product.price}"></p>
         </div>
     </div>
 </div>
