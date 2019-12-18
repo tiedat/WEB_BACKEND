@@ -31,5 +31,18 @@ public class ProductRepositoryImpl implements IProductRepository {
         return null;
     }
 
+    @Override
+    public Product findByName(String name) {
+        for (Product product: productList) {
+            if (product.getName().equals(name)) {
+                return product;
+            }
+        }
+        return null;
+    }
 
+    @Override
+    public void save(Product product) {
+        productList.add(product);
+    }
 }

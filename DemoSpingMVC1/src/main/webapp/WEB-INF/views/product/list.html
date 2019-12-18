@@ -3,18 +3,36 @@
     <meta charset="UTF-8">
     <title>Product List</title>
     <link href="/styles/style.css" th:href="@{/styles/style.css}" rel="stylesheet">
+    <style>
+        .detail {
+            display: block;
+            width: 80px;
+            height: 30px;
+            background-color: blue;
+            text-align: center;
+            line-height: 30px;
+            color: #fff;
+            font-size: 18px;
+            text-decoration: none;
+        }
+    </style>
 
 </head>
 <body>
 <h1 class="title">Products List</h1>
+<form th:action="@{search}">
+    <input type="text" name="txtSearch" id="txtSearch">
+    <input type="submit" th:value="Search">
+</form>
 <div>
     <div th:each="product,iterStat : ${products}" th:class="${iterStat.odd}? 'odd'">
         <div class="product-item">
             <p th:text="${product.name}"></p>
-            <p <a>th:herf=</a>th:text="${product.price}"></p>
+            <p><a class="detail" th:href="@{producequestParamt-detail/__${product.id}__}">Detail</a></p>
         </div>
     </div>
 </div>
 
 </body>
+
 </html>
