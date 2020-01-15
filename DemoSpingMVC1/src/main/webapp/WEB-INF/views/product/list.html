@@ -24,12 +24,27 @@
     <input type="text" name="txtSearch" id="txtSearch">
     <input type="submit" th:value="Search">
 </form>
+<p><a href="/product/create">Create New Product</a></p>
 <div>
-    <div th:each="product,iterStat : ${products}" th:class="${iterStat.odd}? 'odd'">
-        <div class="product-item">
-            <p th:text="${product.name}"></p>
-            <p><a class="detail" th:href="@{producequestParamt-detail/__${product.id}__}">Detail</a></p>
-        </div>
+    <div class="product-item">
+        <table border="1px">
+            <tr>
+                <td>ID:</td>
+                <td>Name:</td>
+                <td>Price:</td>
+                <td>Image:</td>
+                <td>Detail</td>
+            </tr>
+            <th:block th:each="product:${products}">
+                <tr>
+                    <td th:text="${product.id}"></td>
+                    <td th:text="${product.name}"></td>
+                    <td th:text="${product.price}"></td>
+                    <td><img width="150px" height="200px" th:src="@{'/i/' + ${product.image}}"></td>
+                    <td><a class="detail" th:href="@{product-detail/__${product.id}__}">Detail</a></td>
+                </tr>
+            </th:block>
+        </table>
     </div>
 </div>
 

@@ -11,9 +11,9 @@ public class ProductRepositoryImpl implements IProductRepository {
     List<Product> productList = new ArrayList<>();
 
     {
-        productList.add(new Product(1, "Samsung", 300));
-        productList.add(new Product(1, "Iphone", 500));
-        productList.add(new Product(1, "Nokia", 700));
+        productList.add(new Product(1, "Samsung", 300, "img1"));
+        productList.add(new Product(2, "Iphone", 500, "img2"));
+        productList.add(new Product(3, "Nokia", 700, "img3"));
     }
 
     @Override
