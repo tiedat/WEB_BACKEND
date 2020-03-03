@@ -4,18 +4,17 @@ import market.product.model.Field;
 import market.product.model.Product;
 import market.product.service.IFieldService;
 import market.product.service.IProductService;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.util.UriComponentsBuilder;
 
-import java.util.Optional;
 
-@Controller
-@RequestMapping("/product")
+@RestController
+@CrossOrigin("*")
+@RequestMapping(value = "/product")
 public class ProductController {
 
     @Autowired
@@ -29,55 +28,77 @@ public class ProductController {
         return fieldService.findAll();
     }
 
-    @GetMapping("/list")
-    public ModelAndView listEmployees(@RequestParam("name") Optional<String> name) {
-        Iterable<Product> products;
-        if (name.isPresent()) {
-            products = productService.findAllByNameContains(name.get());
-        } else {
-            products = productService.findAll();
+    //-------------------------------list-------------------------------------------
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    public ResponseEntity<Iterable<Product>> listAllProduct() {
+        Iterable<Product> products = productService.findAll();
+
+        if (products == null) {
+            return new ResponseEntity<Iterable<Product>>(HttpStatus.NO_CONTENT);
         }
-        ModelAndView modelAndView = new ModelAndView("/product/list");
-        modelAndView.addObject("products", products);
-        modelAndView.addObject("message");
-        return modelAndView;
+
+        return new ResponseEntity<Iterable<Product>>(products, HttpStatus.OK);
     }
 
-    @GetMapping("/create")
-    public ModelAndView createDepartment() {
-        ModelAndView modelAndView = new ModelAndView("/product/create");
-        modelAndView.addObject("product", new Product());
-        return modelAndView;
+    //-------------------------------findAllByNameContains-------------------------------------------
+
+    @RequestMapping(value = "/findAllByNameContains", method = RequestMethod.GET)
+    public ResponseEntity<Iterable<Product>> listAllProduct(@RequestParam("search") String searchText) {
+        Iterable<Product> products = productService.findAllByNameContains(searchText);
+
+        if (products == null) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+
+        return new ResponseEntity<>(products, HttpStatus.OK);
+
     }
 
-    @PostMapping("/create")
-    public ModelAndView saveDepartment(@ModelAttribute("product") Product product,
-                                       BindingResult result) {
+    //-------------------------------create------------------------------------------------------------
+
+
+    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    public ResponseEntity<Void> createProduct(@RequestBody Product product,
+                                              UriComponentsBuilder uriComponentsBuilder) {
+
         productService.save(product);
-        ModelAndView modelAndView = new ModelAndView("/product/create");
-        modelAndView.addObject("department", new Product());
-        modelAndView.addObject("message", "New department created successfully");
-        return modelAndView;
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+
+        httpHeaders.setLocation(uriComponentsBuilder.path("/save/{id}").buildAndExpand(product.getId()).toUri());
+
+        return new ResponseEntity<>(httpHeaders, HttpStatus.CREATED);
     }
 
-    @GetMapping("/delete/{id}")
-    public ModelAndView showDeleteForm(@PathVariable Long id) {
+    //-------------------------------detail------------------------------------------------------------
+
+    @RequestMapping(value = "/detail/{id}", method = RequestMethod.GET)
+    public ResponseEntity<Product> detailProduct(@PathVariable("id") Long id) {
+
         Product product = productService.findById(id);
-        if (product != null) {
-            ModelAndView modelAndView = new ModelAndView("/product/delete");
-            modelAndView.addObject("product", product);
-            return modelAndView;
-        } else {
-            return new ModelAndView("/error.404");
-        }
+
+        return new ResponseEntity<>(product, HttpStatus.OK);
     }
 
-    @PostMapping("/delete")
-    public ModelAndView deleteProduct(@NotNull @ModelAttribute("product") Product product, @NotNull final RedirectAttributes redirectAttributes) {
-        productService.remove(product.getId());
-        ModelAndView modelAndView = new ModelAndView("redirect:/product/list");
-        redirectAttributes.addFlashAttribute("message","deleted");
-        return modelAndView;
+    //-------------------------------edit------------------------------------------------------------
+
+
+    @RequestMapping(value = "/edit/id", method = RequestMethod.PUT)
+    public ResponseEntity<Product> saveProduct(@RequestBody Product product) {
+
+        productService.save(product);
+
+        return new ResponseEntity<>(product, HttpStatus.OK);
     }
 
+    //-------------------------------delete------------------------------------------------------------
+
+
+    @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<Product> deleteProduct(@PathVariable("id") Long id) {
+
+        productService.remove(id);
+
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }

@@ -1,5 +1,7 @@
 package market.product.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.naming.Name;
 import javax.persistence.*;
 import java.util.List;
@@ -13,6 +15,7 @@ public class Field {
     private Long id;
     private String name;
 
+    @JsonIgnore
     @OneToMany(targetEntity = Product.class)
     private List<Product> products;
 
@@ -40,11 +43,11 @@ public class Field {
         this.name = name;
     }
 
-    public List<Product> getEmployees() {
+    public List<Product> getProducts() {
         return products;
     }
 
-    public void setEmployees(List<Product> employees) {
-        this.products = employees;
+    public void setProducts(List<Product> productList) {
+        this.products = productList;
     }
 }

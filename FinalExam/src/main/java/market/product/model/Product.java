@@ -20,17 +20,27 @@ public class Product {
     private Double amount;
     private LocalDate initDate;
     private String description;
+    private String gender;
 
     public Product() {
     }
 
-    public Product(String name, Field field, Double price, Double amount, LocalDate initDate, String description) {
+    public Product(String name, Field field, Double price, Double amount, LocalDate initDate, String description, String gender) {
         this.name = name;
         this.field = field;
         this.price = price;
         this.amount = amount;
         this.initDate = initDate;
         this.description = description;
+        this.gender = gender;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 
     public Long getId() {
@@ -87,5 +97,10 @@ public class Product {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("Product[ id =%d, name=%s ]", id , name);
     }
 }

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Danh sách nhân viên</title>
+    <style>
+        #employee {
+            width: 100%;
+        }
+
+        #employee td, #customers th {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+
+        #employee tr:nth-child(even) {
+            background-color: #93c5c759;
+        }
+
+        #employee tr:hover {
+            background-color: #4caf50;
+        }
+
+        #employee th {
+            padding-top: 12px;
+            padding-bottom: 12px;
+            text-align: left;
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .add-product {
+            background-color: #4CAF50;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            float: right;
+        }
+
+        .title {
+            text-align: center;
+        }
+
+        .search-product {
+            float: left;
+        }
+
+        input[type=text] {
+            width: 200px;
+            padding: 12px 20px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        input[type=submit] {
+
+            background-color: #4CAF50;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        a {
+            color: black;
+            text-decoration: none;
+            margin-right: 16px;
+            margin-left: 10px;
+        }
+
+        #button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+    </style>
+</head>
+<body>
+<button id="button"><a href="/create">Thêm mới nhân viên</a></button>
+<div style="text-align: center;"><h1 style="color: black">Danh sách nhân viên</h1></div>
+<th:block th:if="${message}">
+    <p th:text="${message}"></p>
+</th:block>
+<form>
+    <div style="text-align: center;">
+        <table>
+            <tr>
+                <td><h2>Tìm kiếm</h2></td>
+                <td><input name="s" type="text" style="width: 600px;"/></td>
+                <td><input type="submit" value="Search" style="width: 100px"/></td>
+            </tr>
+        </table>
+    </div>
+
+</form>
+<br/>
+<div style="text-align: center;">
+    <table id="employee">
+        <tr>
+            <th width="25px">
+                <div style="text-align: center;">Mã nhân viên</div>
+            </th>
+            <th width="25px">
+                <div style="text-align: center;">Nhóm nhân viên</div>
+            </th>
+            <th width="25px">
+                <div style="text-align: center;">Họ tên</div>
+            </th>
+            <th width="25px">
+                <div style="text-align: center;">Giới tính</div>
+            </th>
+            <th width="25px">
+                <div style="text-align: center;">Số điện thoại</div>
+            </th>
+            <th width="25px">
+                <div style="text-align: center;">Chức năng</div>
+            </th>
+        </tr>
+        <th:block th:each="r : ${employees}">
+            <tr>
+                <td th:text="${r.codeStaff}"></td>
+                <td th:text="${r.department.name}"></td>
+                <td th:text="${r.name}"></td>
+                <td th:text="${r.gender}"></td>
+                <td th:text="${r.phoneNumber}"></td>
+                <td>
+                    <div style="text-align: center;">
+                        <a th:href="@{/edit/__${r.id}__ }">
+                            <img border="0"
+                                 src="https://suativiled.com.vn/wp-content/uploads/2019/03/icon-bao-hanh.png"
+                                 width="30">
+                        </a>|
+                        <a th:href="@{/delete/__${r.id}__ }">
+                            <img border="0"
+                                 src="http://www.3gmobiles.biz/image/upload/news/2014/7/5/210/210_img1.png"
+                                 width="30">
+                        </a>
+                    </div>
+                </td>
+            </tr>
+        </th:block>
+    </table>
+</div>
+</body>
+</html>

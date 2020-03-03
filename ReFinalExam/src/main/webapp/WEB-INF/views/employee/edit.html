@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Sửa nhân viên</title>
+    <style>
+        input[type=text], select {
+            width: 350px;
+            padding: 12px 20px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        input[type=submit] {
+
+            background-color: #4CAF50;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0 8px 8px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+
+        }
+
+        #button {
+            width: 110px;
+            background-color: #4CAF50;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0px 8px 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            float: left;
+        }
+
+
+        form {
+            margin: auto;
+            width: 30%;
+        }
+
+    </style>
+</head>
+<div style="text-align: center;">
+    <body>
+    <h1>Sửa nhân viên</h1>
+    <form th:action="@{/save}" th:object="${employee}" method="post">
+        <input th:type="hidden" name="id" th:field="*{id}">
+        <table>
+            <tr>
+                <td>Mã nhân viên:</td>
+                <td><input type="text" th:field="*{codeStaff}" readonly/></td>
+            </tr>
+            <tr>
+                <td>Chọn nhóm nhân viên:</td>
+                <td>
+                    <select name="department">
+                        <option th:each="p : ${departments}"
+                                th:value="${p.id}"
+                                th:text="${p.name}"
+                                th:selected="(${p.id} == *{department.id})"></option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>Họ tên:</td>
+                <td><input type="text" th:field="*{name}"/></td>
+                <td th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name Error</td>
+            </tr>
+            <tr>
+                <td>Ngày sinh:</td>
+                <td><input type="text" th:field="*{dob}" placeholder="yyyy-MM-dd"/></td>
+                <td th:if="${#fields.hasErrors('dob')}" th:errors="*{dob}">DateOfBirth Error</td>
+            </tr>
+            <tr>
+                <td>Số điện thoại:</td>
+                <td><input type="text" th:field="*{phoneNumber}"/></td>
+                <td th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}">NumberPhone Error</td>
+            </tr>
+            <tr>
+                <td>Số CMND:</td>
+                <td><input type="text" th:field="*{personalId}"/></td>
+                <td th:if="${#fields.hasErrors('personalId')}" th:errors="*{personalId}">PersonId Error</td>
+            </tr>
+            <tr>
+                <td>Email:</td>
+                <td><input type="text" th:field="*{email}"/></td>
+                <td th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email Error</td>
+            </tr>
+            <tr>
+                <td>Địa chỉ:</td>
+                <td><input type="text" th:field="*{address}"/></td>
+                <td th:if="${#fields.hasErrors('address')}" th:errors="*{address}">Address Error</td>
+            </tr>
+            <tr>
+                <td>Giới tính:</td>
+                <td>
+                    <input type="radio" name="gender" th:field="*{gender}" value="MALE">Nam
+                    <input type="radio" name="gender" th:field="*{gender}" value="FEMALE">Nữ
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <input type="submit" value="Sửa nhân viên" style="color: blue">
+                </td>
+            </tr>
+        </table>
+    </form>
+    </body>
+</div>
+</html>

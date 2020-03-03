@@ -2,7 +2,6 @@ package market.product.formatter;
 
 import market.product.model.Field;
 import market.product.service.IFieldService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.Formatter;
 
 import java.text.ParseException;
